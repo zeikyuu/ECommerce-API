@@ -33,5 +33,51 @@ router.get("/active", (req, res) => {
 })
 
 
+// route to single product
+router.get("/:productId", (req, res) => {
+	productController.getProduct(req.params.productId).then(resultFromController => {
+		res.send(resultFromController)
+	})
+})
+
+
+// Update product
+
+/*router.patch('/:productId/update', auth.verify, (req, res) => {
+    const data = {
+      productId: req.params.productId,  
+      isAdmin: auth.decode(req.headers.authorization).isAdmin
+    }  
+  
+    updateProduct(data, req.body).then(
+      resultFromController => res.send(resultFromController))
+})*/
+
+
+
+router.patch("/:productId", auth.verify, (req, res) => {
+	const data = {
+		productId: req.params.productId,
+		isAdmin: auth.decode(req.headers.authorization).isAdmin
+	}
+
+	updateProduct(data).then(resultFromController => {
+		res.send(resultFromController);
+	})
+})
+
+
+
+// Archiving a single product
+router.patch('/:productId/archive', auth.verify, (req, res) => {
+    const data = {
+      productId: req.params.productId,  
+      isAdmin: auth.decode(req.headers.authorization).isAdmin
+    }  
+
+    archiveProduct(data).then(
+      resultFromController => res.send(resultFromController))
+})
+
 
 module.exports = router;

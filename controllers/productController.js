@@ -39,3 +39,48 @@ module.exports.getActiveProducts = () => {
 		return res;
 	})
 }
+
+// Getting Single Product
+module.exports.getProduct = (productId) => {
+	return Product.findById(productId).then(res => {
+		return res;
+	})
+}
+
+// Update product
+/*module.exports.updateProduct = (productId, newData) => {
+	return Product.findByIdAndUpdate(productId, {
+		name: newData.name,
+		description: newData.description,
+		price: newData.price,
+	})
+	.then((updatedProduct, error) => {
+		if(error){
+			return false
+		}
+
+		return true
+	})
+}*/
+
+
+module.exports.updateProduct = (productId, newData) =>{
+	if(productId.isAdmin){
+		let updatedProduct = ({
+			name: newData.name,
+			description: newData.description,
+			price: newData.price,
+		})
+
+		return Product.findByIdAndUpdate(productId, updatedProduct)
+		.then((updatedProduct, error) => {
+			if(error){
+				return false
+			}
+
+			return true
+		})
+
+	}
+
+}
