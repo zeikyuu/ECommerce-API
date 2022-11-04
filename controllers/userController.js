@@ -6,18 +6,19 @@ const Product = require("../models/Product.js")
 
 module.exports.registerUser = (reqBody) => {
 	let newUser = new User({
-		firstName : firstName,
-		lastName: lastName,
+		firstName : reqBody.firstName,
+		lastName: reqBody.lastName,
 		email : reqBody.email,
 		password : bcrypt.hashSync(reqBody.password, 10)
 		// 10 = salt
 	})
 
-	return newUser.save().then((user, error) => {
-		if(error){
-			return false;
+	return newUser.save()
+	.then((user, error) => {
+		if(user){
+			return "You Have Been Added Succesfully";
 		}else{
-			return true;
+			return false;
 		}
 	})
 }
