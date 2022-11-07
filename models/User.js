@@ -20,27 +20,7 @@ const mongoose = require("mongoose");
 		isAdmin : {
 			type : Boolean,
 			default : false
-		},
-		orders : [
-			{
-				product : [{
-					productName : {
-						type : String,
-						required : [true, "Product is require"]
-					}
-				}],
-				totalAmount : {
-					type : Number,
-					required : [true, "Total amount is required"]
-				},
-				purchaseOn : {
-					type : Date,
-					default : new Date()
-				}
-			}
-
-
-		]
+		}
 
 	})
 

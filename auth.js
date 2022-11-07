@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const secret = "CapstoneAPI";
+const secret = "ECommerceAPI";
 
 
 module.exports.createAccessToken = (user) => {

@@ -47,12 +47,13 @@ module.exports.getProduct = (productId) => {
 	})
 }
 
-// Update product
-/*module.exports.updateProduct = (productId, newData) => {
+// ------------------------------
+module.exports.updateProduct = (productId, newData) => {
 	return Product.findByIdAndUpdate(productId, {
 		name: newData.name,
 		description: newData.description,
-		price: newData.price,
+		price: newData.price
+		
 	})
 	.then((updatedProduct, error) => {
 		if(error){
@@ -61,26 +62,22 @@ module.exports.getProduct = (productId) => {
 
 		return true
 	})
-}*/
-
-
-module.exports.updateProduct = (productId, newData) =>{
-	if(productId.isAdmin){
-		let updatedProduct = ({
-			name: newData.name,
-			description: newData.description,
-			price: newData.price,
-		})
-
-		return Product.findByIdAndUpdate(productId, updatedProduct)
-		.then((updatedProduct, error) => {
-			if(error){
-				return false
-			}
-
-			return true
-		})
-
-	}
-
 }
+
+
+// ----------------------------------------------
+module.exports.archiveProduct = (productId) => {
+	return Product.findByIdAndUpdate(productId, {
+		isActive: false
+	})
+	.then((archivedProduct, error) => {
+		if(error){
+			return false
+		} 
+
+		return true
+	})
+}
+
+
+

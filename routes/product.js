@@ -55,7 +55,7 @@ router.get("/:productId", (req, res) => {
 
 
 
-router.patch("/:productId", auth.verify, (req, res) => {
+/*router.patch("/:productId", auth.verify, (req, res) => {
 	const data = {
 		productId: req.params.productId,
 		isAdmin: auth.decode(req.headers.authorization).isAdmin
@@ -65,19 +65,25 @@ router.patch("/:productId", auth.verify, (req, res) => {
 		res.send(resultFromController);
 	})
 })
+*/
+
+router.patch("/:productId", auth.verify, (req, res) => {
+	productController.updateProduct(req.params.productId, req.body).then(resultFromController => {
+		res.send(resultFromController)
+	})
+})
+
+
 
 
 
 // Archiving a single product
-router.patch('/:productId/archive', auth.verify, (req, res) => {
-    const data = {
-      productId: req.params.productId,  
-      isAdmin: auth.decode(req.headers.authorization).isAdmin
-    }  
-
-    archiveProduct(data).then(
-      resultFromController => res.send(resultFromController))
+router.patch("/:productId/archive", auth.verify, (req, res) => {
+	productController.archiveProduct(req.params.productId).then(resultFromController => {
+		res.send(resultFromController)
+	})
 })
+
 
 
 module.exports = router;

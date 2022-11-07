@@ -38,3 +38,15 @@ module.exports.loginUser = (reqBody) => {
 		}
 	})
 }
+
+
+module.exports.getUserDetails = (data) => {
+	return User.findById(data.userId).then(result => {
+		if (result == null) {
+			return "User not found";
+		}else {
+			return result;
+		}
+	})
+}
+

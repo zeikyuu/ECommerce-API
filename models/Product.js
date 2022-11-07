@@ -20,13 +20,7 @@ const productSchema = new mongoose.Schema({
 	createdOn : {
 		type : Date,
 		default : new Date()
-	},
-	orders : [{
-		orderId : {
-			type : String,
-			required : [true, "OrderId is required!"]
-		}
-	}]
+	}
 
 
 
