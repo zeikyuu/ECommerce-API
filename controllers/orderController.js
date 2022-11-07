@@ -2,10 +2,11 @@ const bcrypt = require("bcrypt");
 const auth = require("../auth.js");
 const Order = require("../models/Order.js");
 const User = require("../models/User.js");
+const Product = require("../models/Product.js")
 
-module.exports.createOrder = (userId, isAdmin, reqBody) => {
+module.exports.createOrder = (userId, isAdmin, reqBody, productID) => {
 	const userData = User.findById(userId);
-	const getProduct = Product.findById(productId);
+	const getProduct = Product.findById(productID);
 	if (isAdmin) {
 		const message = Promise.resolve("Admin cannot create order.");
 
@@ -19,7 +20,7 @@ module.exports.createOrder = (userId, isAdmin, reqBody) => {
 			lastName: userData.lastName,
 			products: [{
 				productId: getProduct.productId,
-				productName: getProduct,productName,
+				productName: getProduct.productName,
 				quantity: getProduct.quantity
 			}],
 			totalAmount: getProduct.totalAmount

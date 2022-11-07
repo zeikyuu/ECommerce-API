@@ -21,10 +21,16 @@ router.post("/checkout", auth.verify, (req, res) => {
 })
 
 
-router.get("/userDetails/:userId", auth.verify, (request, response) => {
-	userController.getUserDetails(request.params.userId)
-	.then(resultFromController => response.send(resultFromController));
+router.get("/userDetails/:userId", auth.verify, (req, res) => {
+	userController.getUserDetails(req.params.userId)
+	.then(resultFromController => res.send(resultFromController));
 });
+
+router.get("/all", (req, res) => {
+	userController.getAllUsers().then(resultFromController => {
+		res.send(resultFromController)
+	})
+})
 
 
 module.exports = router;

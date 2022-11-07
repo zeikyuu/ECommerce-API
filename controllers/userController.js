@@ -27,7 +27,7 @@ module.exports.registerUser = (reqBody) => {
 module.exports.loginUser = (reqBody) => {
 	return User.findOne({email : reqBody.email}).then(result => {
 		if(result == null){
-			return false;
+			return "User not Found";
 		}else{
 			const isPasswordCorrect = bcrypt.compareSync(reqBody.password, result.password);
 
@@ -41,12 +41,21 @@ module.exports.loginUser = (reqBody) => {
 
 
 module.exports.getUserDetails = (data) => {
-	return User.findById(data.userId).then(result => {
+	return User.findById(data).then(result => {
 		if (result == null) {
 			return "User not found";
 		}else {
+
 			return result;
 		}
 	})
 }
 
+
+// Get all users
+
+module.exports.getAllUsers = () => {
+	return User.find({}).then(result => {
+		return result
+	})
+}

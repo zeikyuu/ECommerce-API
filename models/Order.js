@@ -12,7 +12,7 @@ const orderSchema = new mongoose.Schema({
 		},
 		productName: {
 			type: String,
-			required: [true, "Product Name is required."]
+			required: [true, "Product Name is required"]
 		},
 		quantity: {
 			type: Number,
