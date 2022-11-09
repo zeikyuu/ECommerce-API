@@ -76,7 +76,6 @@ router.patch("/:productId", auth.verify, (req, res) => {
 
 
 
-
 // Archiving a single product
 router.patch("/:productId/archive", auth.verify, (req, res) => {
 	productController.archiveProduct(req.params.productId).then(resultFromController => {

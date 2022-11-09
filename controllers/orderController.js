@@ -1,39 +1,75 @@
-const bcrypt = require("bcrypt");
-const auth = require("../auth.js");
 const Order = require("../models/Order.js");
+const Product = require("../models/Product.js");
 const User = require("../models/User.js");
-const Product = require("../models/Product.js")
+const auth = require("../auth.js");
+const mongoose = require("mongoose")
 
-module.exports.createOrder = (userId, isAdmin, reqBody, productID) => {
-	const userData = User.findById(userId);
-	const getProduct = Product.findById(productID);
-	if (isAdmin) {
-		const message = Promise.resolve("Admin cannot create order.");
 
-		return message.then((value) => {
-			return value;
-		});
-	}else{
-		let newOrder = new Order({
-			userId: userData.userId,
-			firstName: userData.firstName,
-			lastName: userData.lastName,
-			products: [{
-				productId: getProduct.productId,
-				productName: getProduct.productName,
-				quantity: getProduct.quantity
-			}],
-			totalAmount: getProduct.totalAmount
-		})
+module.exports.createOrder = async (data) => {
 
-		return newOrder.save()
-		.then((newOrder, error) => {
-			if (error) {
-				return "Failed to create new order.";
-			}else{
-				return "Order successfully created.";
-			}
-		});
+if(!data.isAdmin){
+	return isProductUpdated = await Product.findById(data.productId).then(product => {
+
+		if(!product.isActive) {
+					return "Product is not available."
+			
+		} else {
+			
+
+			let newOrder = new Order({
+		userId : data.userId,
+		products : [{
+			productId: data.productId,
+			quantity : data.quantity
+
+		}],
+		totalAmount: product.price * data.quantity
+
+	})
+
+			return newOrder.save().then((newOrder, error) => {
+				if(error){
+					return "Error. Try Again."
+				}
+				return "Order successfully created!"
+			})
+			
 	}
 
-};
+	return product.save().then((product, error) => {
+		if (error){
+			return "Order successfully created!"
+		} 
+			return "Error occured please try again."
+	})
+		})
+
+} else {
+	let message = Promise.resolve("Admins are not allowed to perform this action.")
+
+	return message.then((value) => {
+		return value
+	})
+
+
+}
+
+}
+
+module.exports.getAllOrders = () => {
+	return Order.find({}).then(result => {
+		return result
+	})
+}
+
+
+
+
+
+
+
+
+
+
+
+

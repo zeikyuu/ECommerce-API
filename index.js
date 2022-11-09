@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const userRoutes = require("./routes/user.js")
 const productRoutes = require("./routes/product.js")
+const orderRoutes = require("./routes/order.js")
 
 
 const app = express();
@@ -19,8 +20,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 
-app.use("/users", userRoutes);
+app.use("/users",userRoutes);
 app.use("/products", productRoutes);
+app.use("/orders", orderRoutes);
 
 
 

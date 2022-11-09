@@ -5,23 +5,31 @@ const Product = require("../models/Product.js")
 
 
 module.exports.registerUser = (reqBody) => {
-	let newUser = new User({
-		firstName : reqBody.firstName,
-		lastName: reqBody.lastName,
-		email : reqBody.email,
-		password : bcrypt.hashSync(reqBody.password, 10)
-		// 10 = salt
-	})
 
-	return newUser.save()
-	.then((user, error) => {
-		if(user){
-			return "You Have Been Added Succesfully";
-		}else{
-			return false;
+	return User.find({email : reqBody.email}).then(result => {
+		if(result.length > 0){
+			return "The email address you've entered is already registered.";
+		} else {
+
+			let newUser = new User({
+				username : reqBody.username,
+				email : reqBody.email,
+				password : bcrypt.hashSync(reqBody.password, 10)
+			})
+
+			return newUser.save().then((user, error) => {
+				if(error){
+					return "Registration failed. Try again.";
+				}else {
+					return "You have successfully registered!";
+				}
+			})
 		}
 	})
+
+	
 }
+
 
 
 module.exports.loginUser = (reqBody) => {
