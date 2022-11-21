@@ -1,33 +1,27 @@
-const User = require("../models/User.js");
 const bcrypt = require("bcrypt");
 const auth = require("../auth.js");
-const Product = require("../models/Product.js")
+
+
+
+const User = require("../models/User.js");
 
 
 module.exports.registerUser = (reqBody) => {
-
-	return User.find({email : reqBody.email}).then(result => {
-		if(result.length > 0){
-			return "The email address you've entered is already registered.";
-		} else {
-
-			let newUser = new User({
-				username : reqBody.username,
-				email : reqBody.email,
-				password : bcrypt.hashSync(reqBody.password, 10)
-			})
-
-			return newUser.save().then((user, error) => {
-				if(error){
-					return "Registration failed. Try again.";
-				}else {
-					return "You have successfully registered!";
-				}
-			})
-		}
+	let newUser = new User({
+		firstName : reqBody.firstName,
+		lastName : reqBody.lastName,
+		email : reqBody.email,
+		password : bcrypt.hashSync(reqBody.password, 10)
+		// 10 = salt
 	})
 
-	
+	return newUser.save().then((user, error) => {
+		if(error){
+			return false;
+		}else{
+			return true;
+		}
+	})
 }
 
 
@@ -35,7 +29,7 @@ module.exports.registerUser = (reqBody) => {
 module.exports.loginUser = (reqBody) => {
 	return User.findOne({email : reqBody.email}).then(result => {
 		if(result == null){
-			return "User not Found";
+			return false;
 		}else{
 			const isPasswordCorrect = bcrypt.compareSync(reqBody.password, result.password);
 
@@ -48,22 +42,71 @@ module.exports.loginUser = (reqBody) => {
 }
 
 
-module.exports.getUserDetails = (data) => {
-	return User.findById(data).then(result => {
-		if (result == null) {
-			return "User not found";
-		}else {
 
+module.exports.getUserDetails = (userId) => {
+
+	return User.findById(userId)
+	.then(result => {
+		if (result == null) {
+			return false;
+		}else{
+			result.password = ``;
 			return result;
 		}
 	})
-}
+
+};
 
 
-// Get all users
+
+// GET ALL USERS
 
 module.exports.getAllUsers = () => {
 	return User.find({}).then(result => {
 		return result
+	})
+}
+
+
+// USER SET AS ADMIN: ADMIN ONLY
+module.exports.addAdmin = (isAdmin, newAdminUserId) => {
+
+	if (isAdmin) {
+		return User.findByIdAndUpdate(newAdminUserId, {
+			isAdmin: true
+		})
+		.then((newAdmin, error) => {
+			if (error) {
+				return false;
+			}else{
+				return true;
+			}
+		})
+	}else{
+		
+		let message = Promise.resolve(`User must be an admin to set other users as admin.`);
+
+		return message.then((value) => {
+			return value;
+		});
+	}
+
+};
+
+
+module.exports.getProfile = (data) => {
+	return User.findById(data.userId).then(result => {
+		return result;
+	})
+}
+
+
+module.exports.checkEmailExists = (reqBody) => {
+	return User.find({email : reqBody.email}).then(result => {
+		if(result.length > 0){
+			return true;
+		}else{
+			return false;
+		}
 	})
 }

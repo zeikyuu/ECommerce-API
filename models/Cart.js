@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
-
-const orderSchema = new mongoose.Schema({
+const cartSchema = new mongoose.Schema({
 	
 	userId: {
 		type: String,
@@ -35,6 +34,11 @@ const orderSchema = new mongoose.Schema({
 			default: 1
 		},
 
+		addedOn: {
+			type: Date,
+			default: new Date()
+		},
+
 		subtotal: {
 			type: Number,
 			default: 0
@@ -45,14 +49,10 @@ const orderSchema = new mongoose.Schema({
 	totalAmount: {
 		type: Number,
 		default: 0
-	},
-
-	purchasedOn: {
-		type: Date,
-		default: new Date()
 	}
-	
+
 });
 
 
-module.exports = mongoose.model("Order", orderSchema);
+
+module.exports = mongoose.model("Cart", cartSchema);
