@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-
 const orderSchema = new mongoose.Schema({
 	
 	userId: {
@@ -13,12 +12,13 @@ const orderSchema = new mongoose.Schema({
 		required: [true, "Customer Name is required."]
 	},
 
+	itemCount: {
+		type: Number,
+		default: 0
+	},
+
 	products: [{
 
-		productId: {
-			type: String,
-			required: [true, "Product ID is required."]
-		},
 
 		productName: {
 			type: String,
@@ -42,6 +42,26 @@ const orderSchema = new mongoose.Schema({
 
 	}],
 
+	deliveryAddress: {
+		type: String,
+		required: [true, "Delivery Address is required."]
+	},
+
+	deliveryMode: {
+		type: String,
+		required: [true, "Delivery Mode is required."]
+	},
+
+	deliveryFee: {
+		type: Number,
+		required: [true, "Delivery Fee is required."]
+	},
+
+	paymentMode: {
+		type: String,
+		required: [true, "Payment Mode is required."]
+	},
+
 	totalAmount: {
 		type: Number,
 		default: 0
@@ -53,6 +73,5 @@ const orderSchema = new mongoose.Schema({
 	}
 	
 });
-
 
 module.exports = mongoose.model("Order", orderSchema);
